@@ -1,0 +1,6 @@
+{
+  "name": "Manga Factory AI - مصنع المانغا بالذكاء الاصطناعي",
+  "description": "A web application to generate manga story outlines, panel descriptions, dialogue, and images using AI. (تطبيق ويب لتوليد مخططات قصص المانغا، أوصاف اللوحات، الحوارات، والصور باستخدام الذكاء الاصطناعي)",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
