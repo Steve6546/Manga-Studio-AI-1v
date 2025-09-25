@@ -10,14 +10,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { PlusCircle, FileText, CalendarDays, BrainCircuit, Trash2, Settings, ArrowRight, RefreshCw, BookOpen } from 'lucide-react';
 import Loader from '../components/Loader';
 import toast from 'react-hot-toast';
-import SimpleModal from '../components/SimpleModal';
 
 const DashboardPage: React.FC = () => {
   const [mangaProjects, setMangaProjects] = useState<MangaDocument[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [projectToDelete, setProjectToDelete] = useState<{ id: string; title: string } | null>(null);
   const navigate = useNavigate();
 
   const getLabel = (value: string, options: { value: string, label: string }[]) => {
@@ -48,23 +45,16 @@ const DashboardPage: React.FC = () => {
     fetchMangaProjects();
   }, [fetchMangaProjects]);
 
-  const openDeleteModal = (id: string, title: string) => {
-    setProjectToDelete({ id, title });
-    setIsDeleteModalOpen(true);
-  };
-
-  const confirmDeleteProject = async () => {
-    if (!projectToDelete) return;
-    try {
-        await deleteMangaDocument(projectToDelete.id);
-        toast.success(`تم حذف مشروع "${projectToDelete.title}" بنجاح.`);
-        fetchMangaProjects(); // Refresh the list
-    } catch (e) {
-        console.error("Failed to delete project:", e);
-        toast.error("فشل حذف المشروع.");
-    } finally {
-        setIsDeleteModalOpen(false);
-        setProjectToDelete(null);
+  const handleDeleteProject = async (id: string, title: string) => {
+    if (window.confirm(`هل أنت متأكد من رغبتك في حذف مشروع "${title}"؟ لا يمكن التراجع عن هذا الإجراء.`)) {
+        try {
+            await deleteMangaDocument(id);
+            toast.success(`تم حذف مشروع "${title}" بنجاح.`);
+            fetchMangaProjects(); // Refresh the list
+        } catch (e) {
+            console.error("Failed to delete project:", e);
+            toast.error("فشل حذف المشروع.");
+        }
     }
   };
 
@@ -82,7 +72,7 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-        <h1 className="text-3xl font-bold text-violet-400">مشاريع المانغا</h1>
+        <h1 className="text-3xl font-bold text-foreground">مشاريع المانغا</h1>
         <Button onClick={() => navigate('/setup')}>
           <PlusCircle className="mr-2 h-4 w-4" />
           ابدأ مشروع جديد
@@ -90,12 +80,12 @@ const DashboardPage: React.FC = () => {
       </div>
 
       {isLoading && <Loader text="جاري تحميل المشاريع..." />}
-      {error && <p className="text-center text-red-400 bg-red-900/30 p-3 rounded-md">{error}</p>}
+      {error && <p className="text-center text-destructive bg-destructive/10 p-3 rounded-md">{error}</p>}
 
       {!isLoading && !error && mangaProjects.length === 0 && (
-        <div className="text-center text-slate-500 text-lg py-16 bg-slate-900 rounded-lg shadow-md border border-slate-800">
+        <div className="text-center text-muted-foreground text-lg py-16 bg-card rounded-lg border border-dashed">
           <p className="text-4xl mb-4">✒️</p>
-          <p className="text-xl font-semibold mb-2">لا توجد مشاريع بعد</p>
+          <p className="text-xl font-semibold mb-2 text-foreground">لا توجد مشاريع بعد</p>
           <p className="mb-6">ابدأ الآن وحوّل أفكارك إلى قصص مصورة مذهلة!</p>
           <Button onClick={() => navigate('/setup')} size="lg">
             أنشئ مشروعك الأول
@@ -106,26 +96,26 @@ const DashboardPage: React.FC = () => {
       {!isLoading && !error && mangaProjects.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {mangaProjects.map((project) => (
-            <Card key={project.id} className="flex flex-col">
+            <Card key={project.id} className="flex flex-col hover:border-primary/50 transition-colors">
               <CardHeader>
-                <CardTitle className="truncate text-violet-300">{project.title || "مشروع بدون عنوان"}</CardTitle>
+                <CardTitle className="truncate text-foreground">{project.title || "مشروع بدون عنوان"}</CardTitle>
                 <CardDescription>{getLabel(project.artStyle, ART_STYLES_OPTIONS)}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow space-y-3">
-                <div className="text-sm text-slate-400 space-y-1">
-                    <p className="flex items-center gap-2"><FileText className="h-4 w-4 text-violet-500" /> ملخص: <span className="text-slate-300 truncate">{project.summary || 'لا يوجد'}</span></p>
-                    <p className="flex items-center gap-2"><BookOpen className="h-4 w-4 text-violet-500" /> الفصول: <span className="text-slate-300">{project.chapters?.length || 0}</span></p>
-                    <p className="flex items-center gap-2"><CalendarDays className="h-4 w-4 text-violet-500" /> آخر تحديث: <span className="text-slate-300 text-xs">{new Date(project.updatedAt).toLocaleDateString('ar-EG')}</span></p>
+                <div className="text-sm text-muted-foreground space-y-2">
+                    <p className="flex items-center gap-2"><FileText className="h-4 w-4 text-primary" /> ملخص: <span className="text-foreground/80 truncate">{project.summary || 'لا يوجد'}</span></p>
+                    <p className="flex items-center gap-2"><BookOpen className="h-4 w-4 text-primary" /> الفصول: <span className="text-foreground/80">{project.chapters?.length || 0}</span></p>
+                    <p className="flex items-center gap-2"><CalendarDays className="h-4 w-4 text-primary" /> آخر تحديث: <span className="text-foreground/80 text-xs">{new Date(project.updatedAt).toLocaleDateString('ar-EG')}</span></p>
                 </div>
               </CardContent>
-              <CardFooter className="flex-col !p-3 space-y-2">
+              <CardFooter className="flex-col !p-3 space-y-2 mt-auto">
                 <Button onClick={() => navigateToProject(project)} className="w-full">
                   افتح الاستوديو <ArrowRight className="mr-2 h-4 w-4" />
                 </Button>
                  <div className="w-full grid grid-cols-3 gap-2">
                      <Button onClick={() => navigate(`/project/${project.id}/memory`)} variant="secondary" size="sm" className="w-full"><BrainCircuit className="h-4 w-4"/></Button>
                     <Button onClick={() => navigate(`/setup/${project.id}`)} variant="secondary" size="sm" className="w-full"><Settings className="h-4 w-4"/></Button>
-                    <Button onClick={() => openDeleteModal(project.id, project.title)} variant="destructive" size="sm" className="w-full"><Trash2 className="h-4 w-4"/></Button>
+                    <Button onClick={() => handleDeleteProject(project.id, project.title)} variant="destructive" size="sm" className="w-full"><Trash2 className="h-4 w-4"/></Button>
                 </div>
               </CardFooter>
             </Card>
@@ -139,16 +129,6 @@ const DashboardPage: React.FC = () => {
           تحديث القائمة
         </Button>
       </div>
-
-      <SimpleModal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        title="تأكيد الحذف"
-        description={`هل أنت متأكد من رغبتك في حذف مشروع "${projectToDelete?.title}"؟ لا يمكن التراجع عن هذا الإجراء.`}
-        onConfirm={confirmDeleteProject}
-        confirmText="حذف"
-        confirmVariant="destructive"
-      />
     </div>
   );
 };

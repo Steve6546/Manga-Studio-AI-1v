@@ -7,14 +7,14 @@ import { cn } from '../lib/utils';
 
 const MainNav: React.FC = () => {
   const linkStyles = "px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2";
-  const activeLinkStyles = "bg-slate-800 text-violet-400";
-  const inactiveLinkStyles = "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200";
+  const activeLinkStyles = "bg-accent text-accent-foreground";
+  const inactiveLinkStyles = "text-muted-foreground hover:bg-accent/50 hover:text-foreground";
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur-sm">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
-        <Link to="/dashboard" className="flex items-center gap-2 text-lg font-bold text-slate-50 hover:text-violet-400 transition-colors">
-          <LayoutTemplate className="h-6 w-6 text-violet-500" />
+        <Link to="/dashboard" className="flex items-center gap-2 text-lg font-bold text-foreground hover:text-primary/90 transition-colors">
+          <LayoutTemplate className="h-6 w-6 text-primary" />
           {APP_TITLE}
         </Link>
         <nav className="flex items-center space-x-2">

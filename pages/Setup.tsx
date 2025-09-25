@@ -180,8 +180,8 @@ const SetupPage: React.FC = () => {
         <div className="flex justify-center items-center gap-4 md:gap-8 mb-8">
             {[1, 2, 3].map(s => (
                 <div key={s} className="flex items-center gap-2">
-                    <div className={ `w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${step >= s ? 'bg-violet-600 text-white' : 'bg-slate-700 text-slate-400'}`}>{s}</div>
-                    <span className={`font-semibold hidden sm:inline ${step >= s ? 'text-slate-100' : 'text-slate-500'}`}>
+                    <div className={ `w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${step >= s ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>{s}</div>
+                    <span className={`font-semibold hidden sm:inline ${step >= s ? 'text-foreground' : 'text-muted-foreground'}`}>
                         {s === 1 && 'الفكرة الأساسية'}
                         {s === 2 && 'بناء العالم'}
                         {s === 3 && 'التوليد'}
@@ -196,8 +196,8 @@ const SetupPage: React.FC = () => {
     return (
         <div className="max-w-4xl mx-auto space-y-8">
              <header className="text-center">
-                <h1 className="text-4xl font-bold text-violet-400">{isEditing ? "تعديل مشروع مانغا" : "تكوين مانغا: مشروع جديد"}</h1>
-                <p className="text-slate-400 mt-2">{isEditing ? "قم بتحديث تفاصيل مشروعك." : "رحلة إبداعية من ثلاث خطوات لإنشاء عالمك."}</p>
+                <h1 className="text-4xl font-bold text-foreground">{isEditing ? "تعديل مشروع مانغا" : "تكوين مانغا: مشروع جديد"}</h1>
+                <p className="text-muted-foreground mt-2">{isEditing ? "قم بتحديث تفاصيل مشروعك." : "رحلة إبداعية من ثلاث خطوات لإنشاء عالمك."}</p>
             </header>
             <StepIndicator />
 
@@ -255,7 +255,7 @@ const SetupPage: React.FC = () => {
                                 </CardHeader>
                                 <CardContent className="space-y-2">
                                     {characters.map((char, index) => (
-                                        <div key={index} className="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                                        <div key={index} className="flex items-center gap-2 p-2 bg-background rounded">
                                             <Input value={char.name} onChange={(e) => { const newChars = [...characters]; newChars[index].name = e.target.value; setCharacters(newChars);}} placeholder="اسم الشخصية" className="flex-grow"/>
                                             <Button size="icon" variant="destructive" onClick={() => setCharacters(characters.filter((_, i) => i !== index))}><Trash2 className="h-4 w-4"/></Button>
                                         </div>
@@ -269,7 +269,7 @@ const SetupPage: React.FC = () => {
                                     <CardHeader><CardTitle>الأماكن</CardTitle></CardHeader>
                                     <CardContent className="space-y-2">
                                         {places.map((place, index) => (
-                                            <div key={index} className="flex items-center gap-2 p-2 bg-slate-800/50 rounded">
+                                            <div key={index} className="flex items-center gap-2 p-2 bg-background rounded">
                                                 <Input value={place.name} onChange={(e) => { const newPlaces = [...places]; newPlaces[index].name = e.target.value; setPlaces(newPlaces);}} placeholder="اسم المكان" className="flex-grow"/>
                                                 <Button size="icon" variant="destructive" onClick={() => setPlaces(places.filter((_, i) => i !== index))}><Trash2 className="h-4 w-4"/></Button>
                                             </div>
@@ -309,11 +309,11 @@ const SetupPage: React.FC = () => {
                                 <CardDescription>{isEditing ? "سيتم حفظ التغييرات على مشروعك." : "سيقوم الذكاء الاصطناعي الآن بتوليد مخطط للصفحة الأولى بناءً على إعداداتك."}</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <div className="p-4 bg-slate-800/50 rounded-lg text-sm space-y-2">
-                                    <p><strong className="text-violet-400">العنوان:</strong> {title}</p>
-                                    <p><strong className="text-violet-400">الشخصيات:</strong> {characters.map(c => c.name).join(', ') || 'لا يوجد'}</p>
-                                    <p><strong className="text-violet-400">الأماكن:</strong> {places.map(p => p.name).join(', ') || 'لا يوجد'}</p>
-                                    <p><strong className="text-violet-400">المواضيع:</strong> {themes.join(', ') || 'لا يوجد'}</p>
+                                <div className="p-4 bg-muted/50 rounded-lg text-sm space-y-2">
+                                    <p><strong className="text-foreground">العنوان:</strong> {title}</p>
+                                    <p><strong className="text-foreground">الشخصيات:</strong> {characters.map(c => c.name).join(', ') || 'لا يوجد'}</p>
+                                    <p><strong className="text-foreground">الأماكن:</strong> {places.map(p => p.name).join(', ') || 'لا يوجد'}</p>
+                                    <p><strong className="text-foreground">المواضيع:</strong> {themes.join(', ') || 'لا يوجد'}</p>
                                 </div>
                             </CardContent>
                             <CardFooter className="flex-col sm:flex-row justify-between gap-4">
