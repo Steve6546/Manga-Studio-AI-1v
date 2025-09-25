@@ -10,11 +10,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { PlusCircle, FileText, CalendarDays, BrainCircuit, Trash2, Settings, ArrowRight, RefreshCw, BookOpen } from 'lucide-react';
 import Loader from '../components/Loader';
 import toast from 'react-hot-toast';
+import SimpleModal from '../components/SimpleModal';
 
 const DashboardPage: React.FC = () => {
   const [mangaProjects, setMangaProjects] = useState<MangaDocument[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<{ id: string; title: string } | null>(null);
   const navigate = useNavigate();
 
   const getLabel = (value: string, options: { value: string, label: string }[]) => {
@@ -45,16 +48,23 @@ const DashboardPage: React.FC = () => {
     fetchMangaProjects();
   }, [fetchMangaProjects]);
 
-  const handleDeleteProject = async (id: string, title: string) => {
-    if (window.confirm(`هل أنت متأكد من رغبتك في حذف مشروع "${title}"؟ لا يمكن التراجع عن هذا الإجراء.`)) {
-        try {
-            await deleteMangaDocument(id);
-            toast.success(`تم حذف مشروع "${title}" بنجاح.`);
-            fetchMangaProjects(); // Refresh the list
-        } catch (e) {
-            console.error("Failed to delete project:", e);
-            toast.error("فشل حذف المشروع.");
-        }
+  const openDeleteModal = (id: string, title: string) => {
+    setProjectToDelete({ id, title });
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDeleteProject = async () => {
+    if (!projectToDelete) return;
+    try {
+        await deleteMangaDocument(projectToDelete.id);
+        toast.success(`تم حذف مشروع "${projectToDelete.title}" بنجاح.`);
+        fetchMangaProjects(); // Refresh the list
+    } catch (e) {
+        console.error("Failed to delete project:", e);
+        toast.error("فشل حذف المشروع.");
+    } finally {
+        setIsDeleteModalOpen(false);
+        setProjectToDelete(null);
     }
   };
 
@@ -115,7 +125,7 @@ const DashboardPage: React.FC = () => {
                  <div className="w-full grid grid-cols-3 gap-2">
                      <Button onClick={() => navigate(`/project/${project.id}/memory`)} variant="secondary" size="sm" className="w-full"><BrainCircuit className="h-4 w-4"/></Button>
                     <Button onClick={() => navigate(`/setup/${project.id}`)} variant="secondary" size="sm" className="w-full"><Settings className="h-4 w-4"/></Button>
-                    <Button onClick={() => handleDeleteProject(project.id, project.title)} variant="destructive" size="sm" className="w-full"><Trash2 className="h-4 w-4"/></Button>
+                    <Button onClick={() => openDeleteModal(project.id, project.title)} variant="destructive" size="sm" className="w-full"><Trash2 className="h-4 w-4"/></Button>
                 </div>
               </CardFooter>
             </Card>
@@ -129,6 +139,16 @@ const DashboardPage: React.FC = () => {
           تحديث القائمة
         </Button>
       </div>
+
+      <SimpleModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        title="تأكيد الحذف"
+        description={`هل أنت متأكد من رغبتك في حذف مشروع "${projectToDelete?.title}"؟ لا يمكن التراجع عن هذا الإجراء.`}
+        onConfirm={confirmDeleteProject}
+        confirmText="حذف"
+        confirmVariant="destructive"
+      />
     </div>
   );
 };
