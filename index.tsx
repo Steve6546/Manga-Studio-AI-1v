@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { HashRouter, Routes, Route, Outlet, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
+import './src/styles/tailwind.css';
 
 import MainNav from './components/MainNav';
 import DashboardPage from './pages/Dashboard';

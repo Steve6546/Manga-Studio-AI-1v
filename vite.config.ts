@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
         strictPort: true,
         allowedHosts: true,
         hmr: {
+          port: 5000,
           clientPort: 5000,
         },
       },
@@ -18,6 +19,9 @@ export default defineConfig(({ mode }) => {
         port: 5000,
         host: '0.0.0.0',
         allowedHosts: true,
+      },
+      css: {
+        postcss: './postcss.config.js',
       },
       plugins: [react()],
       define: {

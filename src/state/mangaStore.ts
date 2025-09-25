@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { MangaDocument, Panel, Chapter } from '../types';
+import { MangaDocument, Panel, Chapter } from '../../types';
 import { getMangaDocument, saveMangaDocument } from '../../services/db';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';

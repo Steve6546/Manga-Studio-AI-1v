@@ -6,24 +6,29 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:css": "tailwindcss -i ./src/styles/tailwind.css -o ./dist/tailwind.css --watch"
   },
   "dependencies": {
-    "idb": "^8.0.3",
     "@google/genai": "^1.0.1",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@tailwindcss/postcss": "^4.1.13",
+    "autoprefixer": "^10.4.21",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.3.12",
+    "idb": "^8.0.3",
+    "lucide-react": "^0.417.0",
+    "postcss": "^8.5.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.6.0",
-    "zustand": "^5.0.5",
-    "framer-motion": "^11.3.12",
-    "lucide-react": "^0.417.0",
     "react-hot-toast": "^2.4.2",
-    "clsx": "^2.1.1",
+    "react-router-dom": "^7.6.0",
+    "reactflow": "^11.11.4",
     "tailwind-merge": "^2.4.0",
-    "@radix-ui/react-slot": "^1.2.3",
-    "class-variance-authority": "^0.7.1",
+    "tailwindcss": "^4.1.13",
     "uuid": "^13.0.0",
-    "reactflow": "^11.11.4"
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
