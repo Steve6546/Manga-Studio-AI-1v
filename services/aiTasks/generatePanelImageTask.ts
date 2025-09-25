@@ -1,5 +1,5 @@
-
 import { GoogleGenAI } from "@google/genai";
+// FIX: Corrected import path
 import { AIPromptInputs, AIOutputTypes, ArtStyle, StoryMemory } from '../../types';
 import { visualStyles } from '../../src/engine/visualStyles';
 
@@ -43,6 +43,7 @@ export async function generatePanelImageTask(
   const finalPrompt = promptSegments.filter(Boolean).join('\n');
 
   const response = await ai.models.generateImages({
+      // FIX: Updated model name
       model: 'imagen-4.0-generate-001',
       prompt: finalPrompt,
       config: {

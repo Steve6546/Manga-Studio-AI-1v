@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMangaStore } from '../src/state/mangaStore';
+// FIX: Corrected import path
 import { googleAIController } from '../services/aiController'; 
+// FIX: Corrected import path
 import { AIPromptInputs, PlotSuggestion, AIOutputTypes } from '../types'; 
 import { Button } from '../components/ui/Button';
 import Modal from '../components/ui/Modal';

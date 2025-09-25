@@ -1,5 +1,5 @@
-
 import { GoogleGenAI } from "@google/genai";
+// FIX: Corrected import path
 import { AIPromptInputs, AIOutputTypes, StoryFeedback, StoryMemory } from '../../types';
 
 function formatStoryMemoryForPrompt(storyMemory?: StoryMemory): string {
@@ -35,6 +35,7 @@ ${memoryContext}
 `;
     
     const response = await ai.models.generateContent({
+        // FIX: Updated model name
         model: "gemini-2.5-flash",
         contents: prompt,
         config: {

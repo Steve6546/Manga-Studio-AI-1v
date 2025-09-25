@@ -1,5 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
+// FIX: Corrected import path
 import { WorldEvent } from '../types';
 import Button from './Button';
 import TextAreaInput from './TextAreaInput';

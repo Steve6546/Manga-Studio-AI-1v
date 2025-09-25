@@ -21,7 +21,9 @@
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.4.0",
     "@radix-ui/react-slot": "^1.2.3",
-    "class-variance-authority": "^0.7.1"
+    "class-variance-authority": "^0.7.1",
+    "uuid": "^13.0.0",
+    "reactflow": "^11.11.4"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

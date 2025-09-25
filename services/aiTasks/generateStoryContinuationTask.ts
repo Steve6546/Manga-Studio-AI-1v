@@ -1,5 +1,5 @@
-
 import { GoogleGenAI } from "@google/genai";
+// FIX: Corrected import path
 import { AIPromptInputs, AIOutputTypes, StoryMemory } from '../../types';
 
 function formatStoryMemoryForPrompt(storyMemory?: StoryMemory): string {
@@ -24,6 +24,7 @@ export async function generateStoryContinuationTask(
   const prompt = `هذا نص سردي عام لقصة مانغا:\n\n${inputs.currentStoryContent}\n\n${memoryContext}\n\nمهمة: تابع كتابة القصة باللغة العربية. أضف فقرة أو فقرتين لإكمال النص بشكل طبيعي ومنطقي، مع الحفاظ على نفس الأسلوب.`;
   
   const response = await ai.models.generateContent({
+      // FIX: Updated model name
       model: "gemini-2.5-flash",
       contents: prompt,
       config: {

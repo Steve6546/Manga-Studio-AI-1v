@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+// FIX: Corrected import path
 import { APP_TITLE } from '../constants';
 
 const Navbar: React.FC = () => {

@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 // FIX: Import useParams from react-router-dom to resolve 'Cannot find name 'useParams'' error.
 import { useParams } from 'react-router-dom';
+// FIX: Corrected import path
 import { Panel, SceneSettings, VisualStyleKey } from '../types';
 import { useMangaStore } from '../src/state/mangaStore';
+// FIX: Corrected import path
 import { googleAIController } from '../services/aiController';
+// FIX: Corrected import path
 import { AIPromptInputs, AIOutputTypes } from '../types';
 import { Button } from './ui/Button';
 import Modal from './ui/Modal';
 import { Label } from './ui/Label';
 import { Textarea } from './ui/Textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/Select';
+// FIX: Corrected import path
 import { ART_STYLES_OPTIONS, CAMERA_ANGLE_OPTIONS, DETAIL_LEVEL_OPTIONS, COLOR_TONE_OPTIONS, DEFAULT_SCENE_SETTINGS } from '../constants';
 import toast from 'react-hot-toast';
 

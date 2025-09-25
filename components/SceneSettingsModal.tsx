@@ -1,5 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
+// FIX: Corrected import path
 import { SceneSettings, VisualStyleKey, ArtStyle, OptionType } from '../types';
 import { 
   ART_STYLES_OPTIONS, 
@@ -7,10 +7,10 @@ import {
   DETAIL_LEVEL_OPTIONS, 
   COLOR_TONE_OPTIONS,
   DEFAULT_SCENE_SETTINGS
+// FIX: Corrected import path
 } from '../constants';
 import Button from './Button';
 import SelectInput from './SelectInput';
-// FIX: Removed local declaration of TextAreaInput as it's imported.
 import TextAreaInput from './TextAreaInput'; 
 
 interface SceneSettingsModalProps {

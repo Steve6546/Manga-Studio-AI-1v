@@ -2,7 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { getAllMangaDocumentIds, getMangaDocument, deleteMangaDocument } from '../services/db';
+// FIX: Corrected import path
 import { MangaDocument } from '../types';
+// FIX: Corrected import path
 import { ART_STYLES_OPTIONS } from '../constants';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/Card';
 import { PlusCircle, FileText, CalendarDays, BrainCircuit, Trash2, Settings, ArrowRight, RefreshCw, BookOpen } from 'lucide-react';

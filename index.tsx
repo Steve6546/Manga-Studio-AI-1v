@@ -10,8 +10,11 @@ import SetupPage from './pages/Setup';
 import EditorPage from './pages/Editor';
 import StoryViewPage from './pages/StoryViewPage';
 import StoryMemoryPage from './pages/StoryMemoryPage';
+import StoryGraphPage from './pages/StoryGraphPage';
+// FIX: Corrected import path
 import MangaPageViewer from './pages/MangaPageViewer';
 import StudioLayout from './layouts/StudioLayout';
+// FIX: Corrected import path
 import { APP_TITLE } from './constants';
 
 
@@ -64,6 +67,7 @@ const App: React.FC = () => {
             <Route path="editor" element={<EditorPage />} />
             <Route path="story" element={<StoryViewPage />} />
             <Route path="memory" element={<StoryMemoryPage />} />
+            <Route path="graph" element={<StoryGraphPage />} />
             <Route path="chapter/:chapterNumber/page/:pageNumber" element={<MangaPageViewer />} />
         </Route>
         

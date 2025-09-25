@@ -39,7 +39,7 @@ const Select: React.FC<SelectProps> = ({ children, value, onValueChange, disable
 // --- Trigger ---
 const SelectTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
     ({ className, children, ...props }, ref) => {
-        const { setIsOpen, disabled } = useSelectContext();
+        const { setIsOpen, disabled, selectedLabel } = useSelectContext();
         return (
             <button
                 ref={ref}
@@ -49,7 +49,7 @@ const SelectTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttrib
                 disabled={disabled}
                 {...props}
             >
-                {children}
+                {children || selectedLabel}
                 <ChevronDown className="h-4 w-4 opacity-50" />
             </button>
         );
@@ -90,9 +90,18 @@ const SelectContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTML
             let foundLabel = '';
             // FIX: Use a generic type guard with React.isValidElement to safely access child props.
             React.Children.forEach(children, child => {
-                if (React.isValidElement<{ value: string; children: React.ReactNode }>(child)) {
+                if (React.isValidElement<{ value: string; children: React.ReactNode }>(child) && child.type === SelectItem) {
                     if (child.props.value === value) {
-                        foundLabel = child.props.children as string;
+                        // Attempt to extract string content from children
+                        if (typeof child.props.children === 'string') {
+                            foundLabel = child.props.children;
+// FIX: The original code was attempting to access `props.children` on an inner React element without proper type guarding, leading to a TypeScript error where `props` was inferred as `unknown`. This has been fixed by applying a generic type guard `React.isValidElement<{ children?: React.ReactNode }>` to the inner element. This ensures that `child.props.children` is correctly typed as a React element with an optional `children` prop, allowing safe access and resolving the error.
+                        } else if (React.isValidElement<{ children?: React.ReactNode }>(child.props.children)) {
+                            const innerElement = child.props.children;
+                            if (typeof innerElement.props.children === 'string') {
+                                foundLabel = innerElement.props.children;
+                            }
+                        }
                     }
                 }
             });
@@ -117,13 +126,16 @@ SelectContent.displayName = "SelectContent";
 // --- Item ---
 const SelectItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { value: string }>(
     ({ className, children, value, ...props }, ref) => {
-        const { onValueChange, setIsOpen } = useSelectContext();
+        const { onValueChange, setIsOpen, setSelectedLabel } = useSelectContext();
         return (
             <div
                 ref={ref}
                 className={cn("relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-2 pr-2 text-sm outline-none hover:bg-slate-800 focus:bg-slate-800 data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className)}
                 onClick={() => {
                     onValueChange(value);
+                    if (typeof children === 'string') {
+                       setSelectedLabel(children);
+                    }
                     setIsOpen(false);
                 }}
                 {...props}

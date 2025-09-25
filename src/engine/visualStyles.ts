@@ -1,4 +1,3 @@
-
 import { ArtStyle, VisualStyleKey } from '../../types';
 
 // Provides descriptive prompt additions for image generation based on ArtStyle

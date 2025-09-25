@@ -1,11 +1,9 @@
-
-
 import React from 'react';
-// FIX: Removed Scene from import as it's not exported from types. Panel is kept if directly used, otherwise TimelineItem is self-sufficient.
-import { Panel } from '../types'; 
+// FIX: Corrected import path. Removed Scene as it's not a defined type.
+import { Panel, VisualStyleKey } from '../types'; 
 import { visualStyles } from '../src/engine/visualStyles'; 
 
-// The 'Scene' type here is a simplified representation for the timeline item.
+// The 'TimelineItem' type here is a simplified representation for the timeline item.
 // It could come from a Panel or an older Scene object.
 interface TimelineItem {
   text: string;

@@ -38,10 +38,9 @@ export interface ButtonProps
   isLoading?: boolean
 }
 
-// FIX: Rewrote component implementation to be more explicit with props handling, which can resolve obscure type inference issues.
-// The rest parameter is changed from `...rest` to `...props` to avoid any potential shadowing.
+// FIX: Rewrote component to fix type errors with variant and size props.
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, isLoading = false, children, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, isLoading, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
@@ -50,7 +49,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={isLoading || props.disabled}
         {...props}
       >
-        {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         {children}
       </Comp>
     )

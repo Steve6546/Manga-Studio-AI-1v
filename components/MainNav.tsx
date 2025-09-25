@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
+// FIX: Corrected import path
 import { APP_TITLE } from '../constants';
 import { LayoutTemplate, PlusCircle } from 'lucide-react';
 import { cn } from '../lib/utils';

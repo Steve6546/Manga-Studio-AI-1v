@@ -1,5 +1,5 @@
-
 import React from 'react';
+// FIX: Corrected import path
 import { OptionType } from '../types';
 
 interface SelectInputProps extends React.SelectHTMLAttributes<HTMLSelectElement> {

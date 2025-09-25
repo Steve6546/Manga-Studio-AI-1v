@@ -1,8 +1,10 @@
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
+// FIX: Corrected import path
 import { StoryMemory } from '../types';
 
-export const GEMINI_MODEL_TEXT_DEFAULT = 'gemini-2.5-flash-preview-04-17';
-export const GEMINI_MODEL_IMAGE_GEN_DEFAULT = 'imagen-3.0-generate-002';
+// FIX: Updated model names to recommended versions.
+export const GEMINI_MODEL_TEXT_DEFAULT = 'gemini-2.5-flash';
+export const GEMINI_MODEL_IMAGE_GEN_DEFAULT = 'imagen-4.0-generate-001';
 
 const apiKey = process.env.API_KEY;
 
@@ -10,6 +12,7 @@ if (!apiKey) {
   console.warn("API_KEY for Gemini is not set in environment variables. AI features will be disabled or use stubs.");
 }
 
+// FIX: Initialize with named apiKey parameter.
 export const ai = new GoogleGenAI({ apiKey: apiKey || "MISSING_API_KEY_STUB" });
 
 export function formatStoryMemoryForPrompt(storyMemory?: StoryMemory, charactersInFocus?: {name: string, description?:string}[]): string {
@@ -84,6 +87,7 @@ export async function callGeminiTextModel(
         maxOutputTokens: maxOutputTokens,
       },
     });
+    // FIX: Access the 'text' property directly on the response object, as per SDK guidelines.
     const textOutput = response.text;
     if (textOutput === "" || textOutput === undefined || textOutput === null) {
       let detailedError = `لم يتم إرجاع أي نص من النموذج لـ ${contextMessage}.`;
@@ -117,6 +121,7 @@ export async function callGeminiImageModel(
         prompt: prompt,
         config: { numberOfImages: 1, outputMimeType: 'image/jpeg' },
     });
+    // FIX: Access the 'generatedImages' array on the response object, as per SDK guidelines.
     if (response.generatedImages && response.generatedImages.length > 0 && response.generatedImages[0].image?.imageBytes) {
       return { base64Image: response.generatedImages[0].image.imageBytes, actualPrompt: prompt };
     } else {

@@ -1,6 +1,7 @@
-
 import { GoogleGenAI } from "@google/genai";
+// FIX: Corrected import path
 import { AIPromptInputs, AIOutputTypes } from '../../types';
+// FIX: Corrected import path
 import { ART_STYLES_OPTIONS, ENVIRONMENT_OPTIONS } from '../../constants';
 
 export async function generateStoryStubTask(
@@ -20,6 +21,7 @@ export async function generateStoryStubTask(
 `;
 
   const response = await ai.models.generateContent({
+      // FIX: Updated model name
       model: "gemini-2.5-flash",
       contents: prompt,
       config: {

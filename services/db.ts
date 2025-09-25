@@ -1,12 +1,12 @@
-
-
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
-import { MangaDocument, StoryMemory, Chapter, PanelLayoutType } // Updated import
-from '../types';
+// FIX: Corrected import path
+import { MangaDocument, StoryMemory, Chapter, PanelLayoutType } from '../types';
+// FIX: Corrected import path
 import { DB_NAME, DB_VERSION, MANGA_PROJECTS_STORE_NAME, DEFAULT_PANEL_LAYOUT } from '../constants';
 
 interface StoryFactoryDBSchema extends DBSchema {
-  [MANGA_PROJECTS_STORE_NAME]: { // Updated store name
+  // FIX: Use a literal string for the object store name to satisfy TypeScript's index signature requirements.
+  'manga_projects': {
     key: string;
     value: MangaDocument;
     indexes: { createdAt: number; updatedAt: number }; 

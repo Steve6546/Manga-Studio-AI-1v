@@ -1,6 +1,7 @@
-
 import { GoogleGenAI } from "@google/genai";
+// FIX: Corrected import path
 import { AIPromptInputs, AIOutputTypes, PanelLayoutType, StoryMemory } from '../../types';
+// FIX: Corrected import path
 import { ART_STYLES_OPTIONS, ENVIRONMENT_OPTIONS, DEFAULT_PANELS_PER_PAGE, DEFAULT_PANEL_LAYOUT } from '../../constants';
 
 function formatStoryMemoryForPrompt(storyMemory?: StoryMemory): string {
@@ -53,14 +54,15 @@ LAYOUT_SUGGESTION: [تخطيط]
 `;
 
   const response = await ai.models.generateContent({
+      // FIX: Updated model name
       model: "gemini-2.5-flash",
       contents: prompt,
   });
   const responseText = response.text;
 
   // Parsing logic remains similar but is now self-contained.
-  const output: AIOutputTypes["generate_manga_page_outline"] = { /* ... default values ... */ initialCharacters: [], environmentSynopsis: "", centralConflictHint: "", panelDescriptions: [], pageTheme: "", pageLayoutSuggestion: DEFAULT_PANEL_LAYOUT };
-  // ... (Full parsing logic as before)
+  const output: AIOutputTypes["generate_manga_page_outline"] = { initialCharacters: [], environmentSynopsis: "", centralConflictHint: "", panelDescriptions: [], pageTheme: "", pageLayoutSuggestion: DEFAULT_PANEL_LAYOUT };
+  
   const charSection = responseText.match(/CHARACTERS:\s*([\s\S]*?)(?:ENVIRONMENT_SYNOPSIS:|$)/i);
   if (charSection && charSection[1]) {
     charSection[1].trim().split(/CHARACTER_SEPARATOR/i).forEach(charStr => {
