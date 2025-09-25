@@ -42,11 +42,11 @@ const MangaPageViewer: React.FC = () => {
         return currentMangaDocument?.chapters
             .find(c => c.chapterNumber === numChapter)?.pages
             .find(p => p.pageNumber === numPage);
-    }, [currentMangaDocument, numChapter, numPage]);
+    }, [currentMangaDocument, chapterNumber, pageNumber, numChapter, numPage]);
     
     const totalPages = useMemo(() => {
         return currentMangaDocument?.chapters.find(c => c.chapterNumber === numChapter)?.pages.length || 1;
-    }, [currentMangaDocument, numChapter]);
+    }, [currentMangaDocument, chapterNumber, numChapter]);
 
     const handleGenerateImage = async (panel: Panel) => {
         if (!currentMangaDocument) return;
@@ -95,9 +95,9 @@ const MangaPageViewer: React.FC = () => {
                         <p className="text-slate-400">Layout: {page.layout}</p>
                     </div>
                      <div className="flex items-center gap-2">
-                        <Button onClick={() => navigatePage('prev')} disabled={numPage <= 1} variant="outline" size="icon"><ArrowLeft className="h-4 w-4" /></Button>
+                        <Button onClick={() => navigatePage('prev')} disabled={numPage <= 1} variant="outline" size="icon" aria-label="Previous Page"><ArrowLeft className="h-4 w-4" /></Button>
                         <span className="text-sm font-medium text-slate-300">{numPage} / {totalPages}</span>
-                        <Button onClick={() => navigatePage('next')} disabled={numPage >= totalPages} variant="outline" size="icon"><ArrowRight className="h-4 w-4" /></Button>
+                        <Button onClick={() => navigatePage('next')} disabled={numPage >= totalPages} variant="outline" size="icon" aria-label="Next Page"><ArrowRight className="h-4 w-4" /></Button>
                     </div>
                 </header>
 
