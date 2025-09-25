@@ -10,6 +10,7 @@ import { Wand2, Edit, ArrowLeft, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import PanelEditModal from '../components/PanelEditModal';
 import ImageEditorModal from '../components/ImageEditorModal';
+import AdsenseAdUnit from '../components/AdsenseAdUnit';
 
 const getGridLayout = (layout: PanelLayoutType) => {
     switch (layout) {
@@ -131,6 +132,13 @@ const MangaPageViewer: React.FC = () => {
                         ))}
                     </div>
                 </div>
+                {/*
+                  IMPORTANT: AdSense Integration
+                  - Replace "YOUR_ADSENSE_AD_SLOT_ID" with your actual ad slot ID from your AdSense account.
+                  - The ad client ID is already set to the one you provided.
+                  - This component will display a responsive ad unit.
+                */}
+                <AdsenseAdUnit adSlot="YOUR_ADSENSE_AD_SLOT_ID" adClient="ca-pub-6397120971773743" className="my-4" />
             </div>
         </>
     );
