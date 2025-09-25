@@ -44,7 +44,7 @@ const SelectTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttrib
             <button
                 ref={ref}
                 type="button"
-                className={cn("flex h-10 w-full items-center justify-between rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm ring-offset-background placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-600 disabled:cursor-not-allowed disabled:opacity-50", className)}
+                className={cn("flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50", className)}
                 onClick={() => !disabled && setIsOpen(prev => !prev)}
                 disabled={disabled}
                 {...props}
@@ -62,7 +62,7 @@ SelectTrigger.displayName = "SelectTrigger";
 const SelectValue = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement> & {placeholder?: string}>(
   ({ className, placeholder, ...props }, ref) => {
     const { value, selectedLabel } = useSelectContext();
-    return <span ref={ref} className={cn(!value && "text-slate-400", className)} {...props}>{selectedLabel || placeholder}</span>
+    return <span ref={ref} className={cn(!value && "text-muted-foreground", className)} {...props}>{selectedLabel || placeholder}</span>
   }
 );
 SelectValue.displayName = "SelectValue";
@@ -113,7 +113,7 @@ const SelectContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTML
         return (
             <div
                 ref={contentRef}
-                className={cn("absolute top-full z-50 mt-2 w-full min-w-[8rem] overflow-hidden rounded-md border border-slate-800 bg-slate-900 text-slate-50 shadow-md animate-in fade-in-80", className)}
+                className={cn("absolute top-full z-50 mt-2 w-full min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-80", className)}
                 {...props}
             >
                 {children}
@@ -130,7 +130,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
         return (
             <div
                 ref={ref}
-                className={cn("relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-2 pr-2 text-sm outline-none hover:bg-slate-800 focus:bg-slate-800 data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className)}
+                className={cn("relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-2 pr-2 text-sm outline-none hover:bg-accent focus:bg-accent data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className)}
                 onClick={() => {
                     onValueChange(value);
                     if (typeof children === 'string') {

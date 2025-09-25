@@ -13,8 +13,8 @@ const Sidebar: React.FC = () => {
 
     const navLinkClass = ({ isActive }: { isActive: boolean }) =>
         cn(
-            "flex items-center gap-3 rounded-lg px-3 py-2 text-slate-300 transition-all hover:text-slate-50 hover:bg-slate-800",
-            isActive && "bg-slate-800 text-slate-50"
+            "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-foreground hover:bg-accent",
+            isActive && "bg-accent text-foreground"
         );
 
     const firstChapter = currentMangaDocument?.chapters?.[0];
@@ -36,11 +36,11 @@ const Sidebar: React.FC = () => {
 
 
     return (
-        <aside className="hidden md:flex flex-col w-64 border-r border-slate-800 bg-slate-900 p-4">
+        <aside className="hidden md:flex flex-col w-64 border-r border-border bg-muted/20 p-4">
             <div className="flex flex-col gap-2 flex-grow">
                 <div className="mb-4">
-                     <h2 className="text-lg font-semibold truncate text-violet-400">{currentMangaDocument?.title || 'Loading...'}</h2>
-                     <p className="text-xs text-slate-500">Manga Studio</p>
+                     <h2 className="text-lg font-semibold truncate text-foreground">{currentMangaDocument?.title || 'Loading...'}</h2>
+                     <p className="text-xs text-muted-foreground">Manga Studio</p>
                 </div>
                
                 <nav className="grid items-start gap-1 text-sm font-medium">
@@ -66,7 +66,7 @@ const Sidebar: React.FC = () => {
                     </NavLink>
                 </nav>
 
-                <div className="mt-4 border-t border-slate-800 pt-4">
+                <div className="mt-4 border-t border-border pt-4">
                     <Button variant="outline" size="sm" className="w-full" onClick={handleAddNewChapter}>
                         <BookPlus className="h-4 w-4 mr-2" />
                         New Chapter

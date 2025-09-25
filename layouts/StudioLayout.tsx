@@ -21,7 +21,7 @@ const StudioLayout: React.FC = () => {
 
     if (isLoading && !currentMangaDocument) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-950">
+            <div className="min-h-screen flex items-center justify-center bg-background">
                 <Loader text="Loading Project..." />
             </div>
         );
@@ -29,7 +29,7 @@ const StudioLayout: React.FC = () => {
 
     if (error) {
         return (
-             <div className="min-h-screen flex items-center justify-center bg-slate-950 text-red-400">
+             <div className="min-h-screen flex items-center justify-center bg-background text-destructive">
                 Error: {error}
             </div>
         );
@@ -40,7 +40,7 @@ const StudioLayout: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen flex bg-slate-950 text-slate-100 font-sans">
+        <div className="min-h-screen flex bg-background text-foreground font-sans">
             <Sidebar />
             <main className="flex-grow p-6 md:p-8 lg:p-10 overflow-y-auto" style={{ maxHeight: '100vh' }}>
                  <Outlet />
