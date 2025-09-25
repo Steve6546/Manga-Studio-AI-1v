@@ -50,6 +50,19 @@ const SetupPage: React.FC = () => {
     const [isGenerating, setIsGenerating] = useState(false);
     const [existingDoc, setExistingDoc] = useState<MangaDocument | null>(null);
 
+    const handleAddTheme = () => {
+        const trimmedTheme = newTheme.trim();
+        if (!trimmedTheme) return;
+
+        if (themes.some(theme => theme.toLowerCase() === trimmedTheme.toLowerCase())) {
+            toast.error("هذا الموضوع موجود بالفعل.");
+            return;
+        }
+
+        setThemes([...themes, trimmedTheme]);
+        setNewTheme('');
+    };
+
     const loadExistingDocument = useCallback(async () => {
         if (!mangaId) return;
         setIsLoading(true);
@@ -289,8 +302,18 @@ const SetupPage: React.FC = () => {
                                         ))}
                                         </div>
                                         <div className="flex gap-2 pt-2">
-                                            <Input value={newTheme} onChange={e => setNewTheme(e.target.value)} placeholder="أضف موضوعًا..." onKeyDown={e => e.key === 'Enter' && newTheme.trim() && (setThemes([...themes, newTheme]), setNewTheme(''))}/>
-                                            <Button size="sm" onClick={() => newTheme.trim() && (setThemes([...themes, newTheme]), setNewTheme(''))}>إضافة</Button>
+                                            <Input
+                                                value={newTheme}
+                                                onChange={e => setNewTheme(e.target.value)}
+                                                placeholder="أضف موضوعًا..."
+                                                onKeyDown={e => {
+                                                    if (e.key === 'Enter') {
+                                                        e.preventDefault(); // Prevents form submission if any
+                                                        handleAddTheme();
+                                                    }
+                                                }}
+                                            />
+                                            <Button size="sm" onClick={handleAddTheme}>إضافة</Button>
                                         </div>
                                     </CardContent>
                                 </Card>
