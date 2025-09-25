@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useMangaStore } from '../src/state/mangaStore';
 // FIX: Corrected import path
 import { googleAIController } from '../services/aiController';
@@ -36,6 +36,7 @@ const StoryMemoryPage: React.FC = () => {
     const [suggestions, setSuggestions] = useState<SuggestedMemoryUpdates | null>(null);
     const [arcSuggestions, setArcSuggestions] = useState<CharacterArcSuggestion | null>(null);
     const [analyzingCharacter, setAnalyzingCharacter] = useState<CharacterMemory | null>(null);
+    const debounceTimeoutRef = useRef<number | null>(null);
 
 
     useEffect(() => {
@@ -43,12 +44,19 @@ const StoryMemoryPage: React.FC = () => {
             setMemory(project.storyMemory);
         }
     }, [project?.storyMemory]);
+    
+    useEffect(() => {
+        // Cleanup timeout on unmount
+        return () => {
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current);
+            }
+        };
+    }, []);
 
-    const handleSaveMemory = async (updatedMemoryFields: Partial<StoryMemory>) => {
-        if (!memory) return;
-        const newMemory = { ...memory, ...updatedMemoryFields, world: { ...memory.world, ...(updatedMemoryFields.world || {}) } };
-        setMemory(newMemory);
-        await updateAndSaveMangaDocument({ storyMemory: newMemory });
+    const handleSaveMemory = async (updatedMemory: StoryMemory) => {
+        setMemory(updatedMemory);
+        await updateAndSaveMangaDocument({ storyMemory: updatedMemory });
     };
 
     const handleFormSave = (item: CharacterMemory | WorldPlace | WorldEvent) => {
@@ -189,6 +197,23 @@ const StoryMemoryPage: React.FC = () => {
             default:
                 return null;
         }
+    };
+    
+    const handleDebouncedTextChange = (updateLogic: (currentMemory: StoryMemory, value: string) => StoryMemory) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const newValue = e.target.value;
+        setMemory(currentMemory => {
+            if (!currentMemory) return null;
+            const newMemory = updateLogic(currentMemory, newValue);
+
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current);
+            }
+            debounceTimeoutRef.current = window.setTimeout(() => {
+                updateAndSaveMangaDocument({ storyMemory: newMemory });
+            }, 1500);
+
+            return newMemory;
+        });
     };
 
 
@@ -360,20 +385,20 @@ const StoryMemoryPage: React.FC = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <Label htmlFor="theme">Theme</Label>
-                                <Textarea id="theme" value={memory.theme || ''} onChange={(e) => setMemory(m => m && ({...m, theme: e.target.value}))} onBlur={() => handleSaveMemory({ theme: memory.theme })} />
+                                <Textarea id="theme" value={memory.theme || ''} onChange={handleDebouncedTextChange((m, v) => ({ ...m, theme: v }))} />
                             </div>
                             <div>
                                 <Label htmlFor="styleNotes">Overall Style Notes</Label>
-                                <Textarea id="styleNotes" value={memory.overallStyleNotes || ''} onChange={(e) => setMemory(m => m && ({...m, overallStyleNotes: e.target.value}))} onBlur={() => handleSaveMemory({ overallStyleNotes: memory.overallStyleNotes })} />
+                                <Textarea id="styleNotes" value={memory.overallStyleNotes || ''} onChange={handleDebouncedTextChange((m, v) => ({ ...m, overallStyleNotes: v }))} />
                             </div>
                         </div>
                         <div>
                              <Label htmlFor="lore">World Lore</Label>
-                             <Textarea id="lore" value={memory.world.lore || ''} onChange={(e) => setMemory(m => m && ({...m, world: {...m.world, lore: e.target.value}}))} rows={4} onBlur={() => handleSaveMemory({ world: memory.world })} />
+                             <Textarea id="lore" value={memory.world.lore || ''} onChange={handleDebouncedTextChange((m, v) => ({ ...m, world: { ...m.world, lore: v } }))} rows={4} />
                         </div>
                          <div>
                              <Label htmlFor="timeline">Timeline Notes</Label>
-                             <Textarea id="timeline" value={memory.world.timelineNotes || ''} onChange={(e) => setMemory(m => m && ({...m, world: {...m.world, timelineNotes: e.target.value}}))} rows={2} onBlur={() => handleSaveMemory({ world: memory.world })} />
+                             <Textarea id="timeline" value={memory.world.timelineNotes || ''} onChange={handleDebouncedTextChange((m, v) => ({ ...m, world: { ...m.world, timelineNotes: v } }))} rows={2} />
                         </div>
                     </CardContent>
                 </Card>

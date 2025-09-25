@@ -27,10 +27,17 @@ export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, ...props }: BadgeProps) {
-  return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />
-  )
-}
+// FIX: Rewrote the component using React.forwardRef. This correctly types it as a React component,
+// resolving errors where the special `key` prop was being rejected, and also fixing misleading
+// type errors about `className` and `variant` not existing on BadgeProps.
+const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
+  ({ className, variant, ...props }, ref) => {
+    return (
+      <div ref={ref} className={cn(badgeVariants({ variant }), className)} {...props} />
+    )
+  }
+)
+Badge.displayName = "Badge"
+
 
 export { Badge, badgeVariants }

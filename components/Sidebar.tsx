@@ -3,11 +3,12 @@ import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import { useMangaStore } from '../src/state/mangaStore';
 import { cn } from '../lib/utils';
 import { Button } from './ui/Button';
-import { Home, Pencil, BookOpen, BrainCircuit, ChevronLeft, Image, Share2 } from 'lucide-react';
+import { Home, Pencil, BookOpen, BrainCircuit, ChevronLeft, Image, Share2, BookPlus } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const Sidebar: React.FC = () => {
     const { mangaId } = useParams<{ mangaId: string; chapterNumber?: string; pageNumber?: string;}>();
-    const { currentMangaDocument } = useMangaStore();
+    const { currentMangaDocument, addChapter } = useMangaStore();
     const navigate = useNavigate();
 
     const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -19,6 +20,19 @@ const Sidebar: React.FC = () => {
     const firstChapter = currentMangaDocument?.chapters?.[0];
     const firstPage = firstChapter?.pages?.[0];
     const initialViewerPath = firstChapter && firstPage ? `/project/${mangaId}/chapter/${firstChapter.chapterNumber}/page/${firstPage.pageNumber}` : '#';
+
+    const handleAddNewChapter = async () => {
+        const title = window.prompt("Enter new chapter title:");
+        if (title && title.trim()) {
+            const result = await addChapter(title.trim());
+            if (result) {
+                // Navigate to the new chapter's first page
+                navigate(`/project/${mangaId}/chapter/${result.newChapterNumber}/page/${result.newPageNumber}`);
+            }
+        } else if (title !== null) { // User clicked OK with empty string
+            toast.error("Chapter title cannot be empty.");
+        }
+    };
 
 
     return (
@@ -51,6 +65,13 @@ const Sidebar: React.FC = () => {
                         Page Viewer
                     </NavLink>
                 </nav>
+
+                <div className="mt-4 border-t border-slate-800 pt-4">
+                    <Button variant="outline" size="sm" className="w-full" onClick={handleAddNewChapter}>
+                        <BookPlus className="h-4 w-4 mr-2" />
+                        New Chapter
+                    </Button>
+                </div>
             </div>
              <div className="mt-auto">
                 <Button variant="outline" className="w-full" onClick={() => navigate('/dashboard')}>

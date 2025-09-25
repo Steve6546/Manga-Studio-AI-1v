@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import { MangaDocument, Panel } from '../types';
+import { MangaDocument, Panel, Chapter } from '../types';
 import { getMangaDocument, saveMangaDocument } from '../../services/db';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
+import { DEFAULT_PANEL_LAYOUT } from '../../constants';
 
 interface MangaStoreState {
   currentMangaDocument: MangaDocument | null;
@@ -12,6 +13,7 @@ interface MangaStoreState {
   clearCurrentMangaDocument: () => void;
   updatePanel: (chapterNumber: number, pageNumber: number, updatedPanel: Panel, save?: boolean) => Promise<void>;
   updateAndSaveMangaDocument: (updatedFields: Partial<Omit<MangaDocument, 'id' | 'createdAt'>>) => Promise<void>;
+  addChapter: (title: string) => Promise<{ newChapterNumber: number; newPageNumber: number } | null>;
 }
 
 export const useMangaStore = create<MangaStoreState>((set, get) => ({
@@ -109,6 +111,43 @@ export const useMangaStore = create<MangaStoreState>((set, get) => ({
     } catch (e) {
       // Re-throw if the caller needs to handle it
       throw e;
+    }
+  },
+
+  addChapter: async (title: string) => {
+    const { currentMangaDocument, updateAndSaveMangaDocument } = get();
+    if (!currentMangaDocument) {
+      toast.error("No project loaded to add a chapter to.");
+      return null;
+    }
+
+    const existingChapters = currentMangaDocument.chapters || [];
+    const newChapterNumber =
+      existingChapters.length > 0
+        ? Math.max(...existingChapters.map((c) => c.chapterNumber)) + 1
+        : 1;
+
+    const newPage = {
+      pageNumber: 1,
+      layout: DEFAULT_PANEL_LAYOUT,
+      panels: [],
+    };
+
+    const newChapter: Chapter = {
+      chapterNumber: newChapterNumber,
+      title: title,
+      pages: [newPage],
+    };
+
+    const newChapters = [...existingChapters, newChapter];
+
+    try {
+      await updateAndSaveMangaDocument({ chapters: newChapters });
+      toast.success(`Chapter ${newChapterNumber}: "${title}" added successfully!`);
+      return { newChapterNumber, newPageNumber: 1 };
+    } catch (e) {
+      // The save function already shows an error toast.
+      return null;
     }
   },
 }));
